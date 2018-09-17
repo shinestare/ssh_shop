@@ -42,7 +42,11 @@
 		var xmlHttpRequst = createXmlHttp();
 		// 2、设置监听，触发回调函数
 		xmlHttpRequst.onreadystatechange = function(){
-		
+			if(xmlHttpRequst.readyState == 4){
+				if(xmlHttpRequst.status == 200) {
+					document.getElementById("span1").innerHTML = xmlHttpRequst.responseText;
+				}
+			}
 		}
 		// 3、打开链接
 		xmlHttpRequst.open("GET", "${pageContext.request.contextPath}/user_findByName.action?time=" + new Date().getTime() + "&username=" + username, true);
@@ -54,15 +58,18 @@
 		var xmlHttp;
 		try {	// FireFox, Opera 8.0+, Safari
 			xmlHttp = new XMLHttpRequest();			
-		} catch(e) {
-			try{	// Internet Explorer
-				xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");				
-			} catch (e) {
-				xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-			} catch(e) {
-			
-			}
-		}
+		} 
+		catch (e){
+			   try{// Internet Explorer
+			         xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+			      }
+			    catch (e){
+			      try{
+			         xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+			      }
+			      catch (e){}
+			      }
+		    }
 		return xmlHttp;
 	}
 </script>
@@ -99,6 +106,7 @@
 								</th>
 								<td>
 									<input type="text" id="username" name="username" class="text" maxlength="20" onblur="checkUsername()">
+									<span id="span1"></span>
 								</td>
 							</tr>
 							<tr>
